@@ -32,6 +32,7 @@
         // Validation
         var description = addDescription.val();
         var descriptionValid = (description.length > 0);
+        // TODO: Ignore currency symbols in the input
         var amount = +addAmount.val();
         var amountValid = (!isNaN(amount) && amount !== 0 && (Math.floor(amount * 100) === amount * 100));
         var valid = descriptionValid && amountValid;
@@ -58,12 +59,16 @@
         }
     });
 
+    var formatAmount = function (number) {
+        return (number >= 0 ? '' : '-') + '$' + Math.abs(number).toFixed(2);
+    };
+
     // Bind UI to data model
     // TODO: Currency formatting and symbol
     var balanceText = $('#balance');
     var balanceStatus = $('#balance-status');
     balanceUpdated = function (balance) {
-        balanceText.text(balance);
+        balanceText.text(formatAmount(balance));
 
         var statusClass = 'panel-success';
         if (balance < 0) {
@@ -79,7 +84,7 @@
             .insertAfter(template)
             .show()
             .find('.transaction-description').text(transaction.description).end()
-            .find('.transaction-amount').text(transaction.amount).end();
+            .find('.transaction-amount').text(formatAmount(transaction.amount)).end();
     };
 
     // Initial state
