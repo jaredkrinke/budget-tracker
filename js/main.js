@@ -1,22 +1,28 @@
 ﻿$(function () {
+    // Constants
+    var currencySymbol = '$';
+    var transactionHistorySize = 10;
+
     // Events
     var balanceUpdated = function () { };
     var transactionAdded = function () { };
 
     // Data model
-    // TODO: Load from local storage
-    var balance = 0;
-    var transactions = [];
+    var balance = +localStorage['balance'] || 0;
+    var transactionsJSON = localStorage['transactions'];
+    var transactions = (transactionsJSON ? JSON.parse(transactionsJSON) : []);
 
     var addTransactionInternal = function (transaction) {
-        transactions.unshift(transaction);
+        transactions.push(transaction);
         balance -= transaction.amount;
     };
 
     var addTransaction = function (transaction) {
         addTransactionInternal(transaction);
 
-        // TODO: Persist changes to local storage
+        // Persist changes to local storage
+        localStorage['balance'] = balance;
+        localStorage['transactions'] = JSON.stringify(transactions.slice(-transactionHistorySize));
 
         balanceUpdated(balance);
         transactionAdded(transaction);
@@ -60,7 +66,7 @@
     });
 
     var formatAmount = function (number) {
-        return (number >= 0 ? '' : '-') + '$' + Math.abs(number).toFixed(2);
+        return (number >= 0 ? '' : '-') + currencySymbol + Math.abs(number).toFixed(2);
     };
 
     // Bind UI to data model
@@ -88,6 +94,9 @@
 
     // Initial state
     balanceUpdated(balance);
+    for (var i = 0, count = transactions.length; i < count; i++) {
+        transactionAdded(transactions[i]);
+    }
 
     // TODO: Deleting transactions
     // TODO: Automate monthly addition of funds
