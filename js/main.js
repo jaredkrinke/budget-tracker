@@ -64,7 +64,6 @@
     };
 
     // Bind UI to data model
-    // TODO: Currency formatting and symbol
     var balanceText = $('#balance');
     var balanceStatus = $('#balance-status');
     balanceUpdated = function (balance) {
