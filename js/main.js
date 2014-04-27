@@ -24,13 +24,38 @@
 
     // UI
     var template = $('#transaction-template').hide();
-
+    var addDescription = $('#add-description');
+    var addDescriptionGroup = $('#add-description-group');
+    var addAmount = $('#add-amount');
+    var addAmountGroup = $('#add-amount-group');
     $('#add').click(function () {
-        // TODO: Validation
-        addTransaction({
-            description: $('#add-description').val(),
-            amount: +$('#add-amount').val(),
-        });
+        // Validation
+        var description = addDescription.val();
+        var descriptionValid = (description.length > 0);
+        var amount = +addAmount.val();
+        var amountValid = (!isNaN(amount) && amount !== 0 && (Math.floor(amount * 100) === amount * 100));
+        var valid = descriptionValid && amountValid;
+
+        if (valid) {
+            // Valid transaction; add it
+            addTransaction({
+                description: description,
+                amount: amount,
+            });
+        } else {
+            // Highlight validation errors
+            if (descriptionValid) {
+                addDescriptionGroup.removeClass('has-error');
+            } else {
+                addDescriptionGroup.addClass('has-error');
+            }
+
+            if (amountValid) {
+                addAmountGroup.removeClass('has-error');
+            } else {
+                addAmountGroup.addClass('has-error');
+            }
+        }
     });
 
     // Bind UI to data model
