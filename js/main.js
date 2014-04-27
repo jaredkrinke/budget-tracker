@@ -106,11 +106,16 @@
     };
 
     transactionAdded = function (transaction) {
-        template.clone()
+        var amount = transaction.amount;
+        var entry = template.clone()
             .insertAfter(template)
             .show()
             .find('.transaction-description').text(transaction.description).end()
-            .find('.transaction-amount').text(formatAmount(transaction.amount)).end();
+            .find('.transaction-amount').text(formatAmount(Math.abs(transaction.amount))).end();
+
+        if (amount < 0) {
+            entry.addClass('list-group-item-success');
+        }
     };
 
     // Initial state
