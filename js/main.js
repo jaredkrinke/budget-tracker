@@ -34,13 +34,20 @@
     var addDescriptionGroup = $('#add-description-group');
     var addAmount = $('#add-amount');
     var addAmountGroup = $('#add-amount-group');
+    var contributeAmount = $('#contribute-amount');
+    var contributeAmountGroup = $('#contribute-amount-group');
+
+    var validateAmount = function (amount) {
+        return (!isNaN(amount) && amount > 0 && (Math.floor(amount * 100) === amount * 100));
+    };
+
     $('#add').click(function () {
         // Validation
         var description = addDescription.val();
         var descriptionValid = (description.length > 0);
         // TODO: Ignore currency symbols in the input
         var amount = +addAmount.val();
-        var amountValid = (!isNaN(amount) && amount !== 0 && (Math.floor(amount * 100) === amount * 100));
+        var amountValid = validateAmount(amount);
         var valid = descriptionValid && amountValid;
 
         if (valid) {
@@ -62,6 +69,20 @@
             } else {
                 addAmountGroup.addClass('has-error');
             }
+        }
+    });
+    
+    $('#contribute').click(function () {
+        var amount = +contributeAmount.val();
+        var valid = validateAmount(amount);
+        if (valid) {
+            contributeAmountGroup.removeClass('has-error');
+            addTransaction({
+                description: 'Contribution',
+                amount: -amount,
+            })
+        } else {
+            contributeAmountGroup.addClass('has-error');
         }
     });
 

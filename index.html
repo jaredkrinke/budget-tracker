@@ -22,15 +22,19 @@
             </div>
 
             <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav">
-                    <li><a>Settings</a></li>
-                </ul>
+                <form class="navbar-form navbar-right">
+                    <div class="form-group" id="contribute-amount-group">
+                        <label class="control-label" for="contribute-amount">Contribution</label>
+                        <input type="number" class="form-control" placeholder="Amount" id="contribute-amount" />
+                    </div>
+                    <button type="button" class="btn btn-default" id="contribute">Add</button>
+                </form>
             </div>
         </nav>
 
         <div class="panel panel-warning" id="balance-status">
             <div class="panel-heading">
-                <h5 class="panel-title">Funds</h5>
+                <h5 class="panel-title">Balance</h5>
             </div>
             <div class="panel-body"><h1 class="text-center" id="balance">$0.00</h1></div>
         </div>
