@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 </head>
 <body>
     <div class="container">
@@ -36,22 +37,14 @@
         <div class="list-group">
             <div class="list-group-item">
                 <form class="form-inline" role="form">
-                    <input type="text" class="form-control" placeholder="Description" />
-                    <input type="number" class="form-control" placeholder="Amount" />
-                    <button type="button" class="btn btn-default">Add</button>
+                    <input type="text" class="form-control" placeholder="Description" id="add-description" />
+                    <input type="number" class="form-control" placeholder="Amount" id="add-amount" />
+                    <button type="button" class="btn btn-default" id="add">Add</button>
                 </form>
             </div>
-            <div class="list-group-item">
-                <span class="expense-name">Food</span>
-                <span class="pull-right">$10.00</span>
-            </div>
-            <div class="list-group-item">
-                <span class="expense-name">Food</span>
-                <span class="pull-right">$10.00</span>
-            </div>
-            <div class="list-group-item">
-                <span class="expense-name">Food</span>
-                <span class="pull-right">$10.00</span>
+            <div class="list-group-item" id="transaction-template">
+                <span class="transaction-description">Food</span>
+                <span class="transaction-amount pull-right">$10.00</span>
             </div>
         </div>
     </div>
