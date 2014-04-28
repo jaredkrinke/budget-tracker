@@ -128,7 +128,7 @@
             .find('.transaction-amount').text(formatAmount(Math.abs(transaction.amount))).end();
 
         if (amount < 0) {
-            entry.addClass('list-group-item-success');
+            entry.addClass('success');
         }
     };
 
@@ -140,7 +140,11 @@
         var transactions = JSON.parse(transactionsJSON);
         for (var i = 0, count = transactions.length; i < count; i++) {
             var transaction = transactions[i];
-            transaction.date = new Date(transaction.date);
+            if (transaction.date) {
+                transaction.date = new Date(transaction.date);
+            } else {
+                transaction.date = Date.today();
+            }
         }
     } else {
         transactions = [];
