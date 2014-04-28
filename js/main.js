@@ -3,14 +3,22 @@
     var currencySymbol = '$';
     var transactionHistorySize = 10;
 
+    // Date helpers
+    Date.today = function () {
+        return new Date();
+    };
+
+    Date.prototype.year = function () { return this.getFullYear(); };
+    Date.prototype.month = function () { return this.getMonth() + 1; };
+    Date.prototype.day = function () { return this.getDate(); };
+
     // Events
     var balanceUpdated = function () { };
     var transactionAdded = function () { };
 
     // Data model
-    var balance = +localStorage['balance'] || 0;
-    var transactionsJSON = localStorage['transactions'];
-    var transactions = (transactionsJSON ? JSON.parse(transactionsJSON) : []);
+    var balance;
+    var transactions;
 
     var addTransactionInternal = function (transaction) {
         transactions.push(transaction);
@@ -18,6 +26,7 @@
     };
 
     var addTransaction = function (transaction) {
+        transaction.date = Date.today();
         addTransactionInternal(transaction);
 
         // Persist changes to local storage
@@ -90,6 +99,10 @@
         return (number >= 0 ? '' : '-') + currencySymbol + Math.abs(number).toFixed(2);
     };
 
+    var formatDate = function (date) {
+        return date.month() + '/' + date.day();
+    }
+
     // Bind UI to data model
     var balanceText = $('#balance');
     var balanceStatus = $('#balance-status');
@@ -111,12 +124,27 @@
             .insertAfter(template)
             .show()
             .find('.transaction-description').text(transaction.description).end()
+            .find('.transaction-date').text(formatDate(transaction.date)).end()
             .find('.transaction-amount').text(formatAmount(Math.abs(transaction.amount))).end();
 
         if (amount < 0) {
             entry.addClass('list-group-item-success');
         }
     };
+
+    // Load data from local storage
+    var balance = +localStorage['balance'] || 0;
+    var transactionsJSON = localStorage['transactions'];
+    var transactions;
+    if (transactionsJSON) {
+        var transactions = JSON.parse(transactionsJSON);
+        for (var i = 0, count = transactions.length; i < count; i++) {
+            var transaction = transactions[i];
+            transaction.date = new Date(transaction.date);
+        }
+    } else {
+        transactions = [];
+    }
 
     // Initial state
     balanceUpdated(balance);
