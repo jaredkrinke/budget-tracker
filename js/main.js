@@ -50,7 +50,9 @@
         return (!isNaN(amount) && amount > 0 && (Math.floor(amount * 100) === amount * 100));
     };
 
-    $('#add').click(function () {
+    $('#add-form').submit(function (event) {
+        event.preventDefault();
+
         // Validation
         var description = addDescription.val();
         var descriptionValid = (description.length > 0);
@@ -80,8 +82,10 @@
             }
         }
     });
-    
-    $('#contribute').click(function () {
+
+    $('#contribute-form').submit(function (event) {
+        event.preventDefault();
+
         var amount = +contributeAmount.val();
         var valid = validateAmount(amount);
         if (valid) {
