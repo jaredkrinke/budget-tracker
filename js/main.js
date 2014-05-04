@@ -46,8 +46,15 @@
     var contributeAmount = $('#contribute-amount');
     var contributeAmountGroup = $('#contribute-amount-group');
 
-    var validateAmount = function (amount) {
-        return (!isNaN(amount) && amount > 0 && (Math.floor(amount * 100) === amount * 100));
+    var amountPattern = /^(\d+|\d*\.\d{0,2})$/;
+    var parseAmount = function (text) {
+        if (amountPattern.test(text)) {
+            var amount = +text;
+            if (!isNaN(amount) && amount > 0) {
+                return amount;
+            }
+        }
+        return NaN;
     };
 
     $('#add-form').submit(function (event) {
@@ -57,8 +64,8 @@
         var description = addDescription.val();
         var descriptionValid = (description.length > 0);
         // TODO: Ignore currency symbols in the input
-        var amount = +addAmount.val();
-        var amountValid = validateAmount(amount);
+        var amount = parseAmount(addAmount.val());
+        var amountValid = !isNaN(amount);
         var valid = descriptionValid && amountValid;
 
         if (valid) {
@@ -86,8 +93,8 @@
     $('#contribute-form').submit(function (event) {
         event.preventDefault();
 
-        var amount = +contributeAmount.val();
-        var valid = validateAmount(amount);
+        var amount = parseAmount(contributeAmount.val());
+        var valid = !isNaN(amount);
         if (valid) {
             contributeAmountGroup.removeClass('has-error');
             addTransaction({
